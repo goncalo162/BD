@@ -40,7 +40,7 @@ CREATE TABLE Loja
 -- DROP TABLE Funcionario
 CREATE TABLE Funcionario
 (
-	id_funcionario INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  id_funcionario INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
   nome_completo  VARCHAR(150) NOT NULL,
   funcao         VARCHAR(150) NOT NULL,
   
