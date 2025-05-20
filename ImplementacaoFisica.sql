@@ -5,7 +5,7 @@ USE Auto_Armando;
 -- DROP TABLE Cliente
 CREATE TABLE Cliente
 (
-	id_cliente              INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  id_cliente              INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
   numero_telemovel        INT NOT NULL,
   empresa                 TINYINT NOT NULL,
   nome_completo           VARCHAR(150) NOT NULL,
@@ -27,7 +27,7 @@ CREATE TABLE Cliente
 -- DROP TABLE Loja
 CREATE TABLE Loja
 (
-	id_loja       INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  id_loja       INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
   email         VARCHAR(150) NOT NULL,
 								                      -- Morada
   cidade        VARCHAR(100) NOT NULL, 
@@ -52,7 +52,7 @@ CREATE TABLE Funcionario
 -- DROP TABLE Veiculo
 CREATE TABLE Veiculo
 (
-	id_veiculo   INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  id_veiculo   INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
   matricula    VARCHAR(6) NOT NULL,
   preco        DECIMAL(10,2) NOT NULL,
   estado       ENUM('ALUGADO', 'LIVRE', 'MANUTENCAO') NOT NULL,
