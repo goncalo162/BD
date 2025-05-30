@@ -1,6 +1,6 @@
--- DROP DATABASE AUTOARMANDO
-CREATE DATABASE Auto_Armando;
-USE Auto_Armando;
+-- DROP DATABASE AutoArmando
+CREATE DATABASE AutoArmando;
+USE AutoArmando;
 
 -- DROP TABLE Cliente
 CREATE TABLE Cliente
@@ -46,6 +46,8 @@ CREATE TABLE Funcionario
   
   id_loja        INT NOT NULL,
 	  FOREIGN KEY (id_loja) REFERENCES Loja(id_loja)
+		ON DELETE RESTRICT
+		ON UPDATE NO ACTION
 );
 
 
@@ -61,7 +63,9 @@ CREATE TABLE Veiculo
   ano          INT NOT NULL,
   
   id_loja      INT NOT NULL,
-	  FOREIGN KEY (id_loja) REFERENCES Loja(id_loja)    
+	  FOREIGN KEY (id_loja) REFERENCES Loja(id_loja)  
+		ON DELETE RESTRICT
+		ON UPDATE NO ACTION
 );
 
 
@@ -75,9 +79,15 @@ CREATE TABLE Aluguer
   data_fim         DATE NOT NULL,
   
   id_cliente       INT NOT NULL,
-	  FOREIGN KEY (id_cliente) REFERENCES Cliente(id_cliente),
+	  FOREIGN KEY (id_cliente) REFERENCES Cliente(id_cliente)
+		ON DELETE RESTRICT
+		ON UPDATE NO ACTION,
   id_veiculo       INT NOT NULL,
-	  FOREIGN KEY (id_veiculo) REFERENCES Veiculo(id_veiculo),
+	  FOREIGN KEY (id_veiculo) REFERENCES Veiculo(id_veiculo)
+		ON DELETE RESTRICT
+		ON UPDATE NO ACTION,      
   id_funcionario   INT NOT NULL,
-	  FOREIGN KEY (id_funcionario) REFERENCES Funcionario(id_funcionario)               
+	  FOREIGN KEY (id_funcionario) REFERENCES Funcionario(id_funcionario)   
+		ON DELETE RESTRICT
+		ON UPDATE NO ACTION
 );
