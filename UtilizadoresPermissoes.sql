@@ -1,32 +1,36 @@
 USE AutoArmando;
 
 -- DROP USER 'firmino_coelho'@'localhost'
-CREATE USER 'firmino_coelho'@'localhost' IDENTIFIED BY 'password';
+CREATE USER 'firmino_coelho'@'localhost' IDENTIFIED BY '@Password123';
 
 -- DROP USER 'filipa_coelho'@'localhost'
-CREATE USER 'filipa_coelho'@'localhost' IDENTIFIED BY 'password';
+CREATE USER 'filipa_coelho'@'localhost' IDENTIFIED BY '@Password123';
 -- DROP USER 'jorge_coelho'@'localhost'
-CREATE USER 'jorge_coelho'@'localhost' IDENTIFIED BY 'password';
+CREATE USER 'jorge_coelho'@'localhost' IDENTIFIED BY '@Password123';
 
 -- DROP USER 'marcelo_meireles'@'localhost'
-CREATE USER 'marcelo_meireles'@'localhost' IDENTIFIED BY 'password';
+CREATE USER 'marcelo_meireles'@'localhost' IDENTIFIED BY '@Password123';
 -- DROP USER 'marcio_meireles'@'localhost'
-CREATE USER 'marcio_meireles'@'localhost' IDENTIFIED BY 'password';
+CREATE USER 'marcio_meireles'@'localhost' IDENTIFIED BY '@Password123';
 -- DROP USER 'jaime_figueiredo'@'localhost'
-CREATE USER 'jaime_figueiredo'@'localhost' IDENTIFIED BY 'password';
+CREATE USER 'jaime_figueiredo'@'localhost' IDENTIFIED BY '@Password123';
 -- DROP USER 'julia_jardim'@'localhost'
-CREATE USER 'julia_jardim'@'localhost' IDENTIFIED BY 'password';
+CREATE USER 'julia_jardim'@'localhost' IDENTIFIED BY '@Password123';
 -- DROP USER 'simao_ferreira'@'localhost'
-CREATE USER 'simao_ferreira'@'localhost' IDENTIFIED BY 'password';
+CREATE USER 'simao_ferreira'@'localhost' IDENTIFIED BY '@Password123';
 -- DROP USER 'sidonio_antunes'@'localhost'
-CREATE USER 'sidonio_antunes'@'localhost' IDENTIFIED BY 'password';
+CREATE USER 'sidonio_antunes'@'localhost' IDENTIFIED BY '@Password123';
+
+-- DROP ROLE Administrador
+CREATE ROLE Administrador;
+-- DROP ROLE GestorFilial
+CREATE ROLE GestorFilial;
+-- DROP ROLE FuncionarioCargo
+CREATE ROLE FuncionarioCargo;
 
 
 
 -- ==Administrador==
-
--- DROP ROLE Administrador
-CREATE ROLE Administrador;
 
 -- REVOKE SELECT, INSERT, DELETE, UPDATE ON Cliente FROM Administrador
 GRANT SELECT, INSERT, DELETE, UPDATE ON Cliente TO Administrador;
@@ -41,18 +45,16 @@ GRANT SELECT, INSERT, UPDATE ON Aluguer TO Administrador;
 
 -- REVOKE GestorFilial FROM Administrador WITH ADMIN OPTION;
 GRANT GestorFilial TO Administrador WITH ADMIN OPTION;
--- REVOKE Funcionario FROM Administrador WITH ADMIN OPTION;
-GRANT Funcionario TO Administrador WITH ADMIN OPTION;
+-- REVOKE FuncionarioCargo FROM Administrador WITH ADMIN OPTION;
+GRANT FuncionarioCargo TO Administrador WITH ADMIN OPTION;
 
 -- REVOKE Administrador TO 'firmino_coelho'@'localhost';
 GRANT Administrador TO 'firmino_coelho'@'localhost';
-
+SET DEFAULT ROLE Administrador TO 'firmino_coelho'@'localhost';
 
 
 -- == Gestor Filial==
 
--- DROP ROLE GestorFilial
-CREATE ROLE GestorFilial;
 
 -- DROP TABLE AuxTGestorFilialLoja
 CREATE TABLE AuxTGestorFilialLoja
@@ -70,8 +72,7 @@ CREATE OR REPLACE VIEW ViVeiculosLojaGestorFilial AS
 SELECT *
 FROM Veiculo AS V
 NATURAL JOIN AuxTGestorFilialLoja AS G
-	WHERE CURRENT_USER() = G.nome_completo  -- CURRENT_USER é o nome do utilizador atual
-		  AND V.id_loja = G.id_loja;
+	WHERE CURRENT_USER() = G.nome_completo;  -- CURRENT_USER é o nome do utilizador atual
           
           
 -- DROP VIEW FuncionariosLojaGestorFilial
@@ -88,8 +89,7 @@ CREATE OR REPLACE VIEW ViLojaGestorFilial AS
 SELECT *
 FROM Loja AS L
 NATURAL JOIN AuxTGestorFilialLoja AS G
-	WHERE CURRENT_USER() = G.nome_completo  -- CURRENT_USER é o nome do utilizador atual
-		  AND L.id_loja = G.id_loja;    
+	WHERE CURRENT_USER() = G.nome_completo;  -- CURRENT_USER é o nome do utilizador atual
           
 
 -- DROP PROCEDURE PrUpdateVeiculos
@@ -146,27 +146,29 @@ BEGIN
 END$$
 DELIMITER ;
 
--- REVOKE EXECUTE ON PrUpdateVeiculos FROM GestorFilial;
-GRANT EXECUTE ON PrUpdateVeiculos TO GestorFilial;
+-- REVOKE EXECUTE ON PROCEDURE PrUpdateVeiculos FROM GestorFilial
+GRANT EXECUTE ON PROCEDURE PrUpdateVeiculos TO GestorFilial;
 
--- REVOKE SELECT, INSERT, DELETE, UPDATE ON VeiculosLojaGestorFilial FROM GestorFilial;
+-- REVOKE SELECT, INSERT, DELETE, UPDATE ON VeiculosLojaGestorFilial FROM GestorFilial
 GRANT SELECT, INSERT, DELETE ON ViVeiculosLojaGestorFilial TO GestorFilial;
--- REVOKE SELECT, INSERT, DELETE, UPDATE ON FuncionariosLojaGestorFilial FROM GestorFilial;
+-- REVOKE SELECT, INSERT, DELETE, UPDATE ON FuncionariosLojaGestorFilial FROM GestorFilial
 GRANT SELECT, INSERT, DELETE, UPDATE ON ViFuncionariosLojaGestorFilial TO GestorFilial;
--- REVOKE SELECT, INSERT, DELETE, UPDATE ON LojaGestorFilial FROM GestorFilial;
+-- REVOKE SELECT, INSERT, DELETE, UPDATE ON LojaGestorFilial FROM GestorFilial
 GRANT SELECT, INSERT, DELETE, UPDATE ON ViLojaGestorFilial TO GestorFilial;
 -- REVOKE SELECT, INSERT, DELETE, UPDATE ON Cliente FROM GestorFilial
 GRANT SELECT, INSERT, DELETE, UPDATE ON Cliente TO GestorFilial;
 -- REVOKE SELECT, INSERT, UPDATE ON Aluguer FROM GestorFilial
 GRANT SELECT, INSERT, UPDATE ON Aluguer TO GestorFilial;
 
--- REVOKE Funcionario FROM GestorFilial WITH ADMIN OPTION;
-GRANT Funcionario TO GestorFilial WITH ADMIN OPTION;
+-- REVOKE FuncionarioCargo FROM GestorFilial WITH ADMIN OPTION;
+GRANT FuncionarioCargo TO GestorFilial WITH ADMIN OPTION;
 
 -- REVOKE GestorFilial FROM 'filipa_coelho'@'localhost'
 GRANT GestorFilial TO 'filipa_coelho'@'localhost';
+SET DEFAULT ROLE GestorFilial TO 'filipa_coelho'@'localhost';
 -- REVOKE GestorFilial FROM 'jorge_coelho'@'localhost'
 GRANT GestorFilial TO 'jorge_coelho'@'localhost';
+SET DEFAULT ROLE GestorFilial TO 'jorge_coelho'@'localhost';
 
 -- DELETE FROM AuxTGestorFilialLoja WHERE nome_completo = 'filipa_coelho@localhost'
 -- DELETE FROM AuxTGestorFilialLoja WHERE nome_completo = 'jorge_coelho@localhost'
@@ -175,5 +177,98 @@ INSERT INTO AuxTGestorFilialLoja VALUES
 ('jorge_coelho@localhost', 3);
 
 
--- DROP ROLE Funcionario
-CREATE ROLE Funcionario;
+
+-- == Funcionario ==
+
+-- DROP TABLE AuxTFuncionarioLoja
+CREATE TABLE AuxTFuncionarioLoja
+(
+  nome_completo VARCHAR(100) PRIMARY KEY NOT NULL,
+  id_loja       INT NOT NULL
+);
+
+-- REVOKE SELECT, INSERT, DELETE, UPDATE ON AuxTFuncionarioLoja FROM Administrador
+GRANT SELECT, INSERT, DELETE, UPDATE ON AuxTFuncionarioLoja TO Administrador;
+-- REVOKE SELECT, INSERT, DELETE, UPDATE ON AuxTFuncionarioLoja FROM GestorFilial
+GRANT SELECT, INSERT, DELETE, UPDATE ON AuxTFuncionarioLoja TO GestorFilial;
+
+-- DROP VIEW ViVeiculosLojaFuncionario
+CREATE OR REPLACE VIEW ViVeiculosLojaFuncionario AS
+SELECT estado
+FROM Veiculo AS V
+NATURAL JOIN AuxTFuncionarioLoja AS F
+	WHERE F.nome_completo = CURRENT_USER();
+    
+
+-- DROP PROCEDURE PrUpdateEstadoVeiculo
+DELIMITER $$
+CREATE PROCEDURE PrUpdateEstadoVeiculo
+(
+  IN id_veiculo_a_atualizar INT,
+  IN estado_novo_veiculo ENUM('ALUGADO', 'LIVRE', 'MANUTENCAO')
+) 
+BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+		ROLLBACK;
+        SIGNAL SQLSTATE '45003' SET MESSAGE_TEXT = 'Erro a atualizar o estado do veículo';
+    END;
+    
+    START TRANSACTION;
+    procedimento: BEGIN
+		IF id_veiculo_a_atualizar IS NULL THEN
+			SIGNAL SQLSTATE '45002' SET MESSAGE_TEXT = 'Não é possivel atualizar os dados de um veículo pois não foi fornecido um ID';
+			LEAVE procedimento;
+		END IF;      
+		IF estado_novo_veiculo IS NOT NULL THEN
+			UPDATE ViVeiculosLoja
+            SET estado = estado_novo_veiculo
+            WHERE id_veiculo = id_veiculo_a_atualizar;
+        END IF;
+    COMMIT;
+    END procedimento;
+END$$
+DELIMITER ;
+	
+-- REVOKE EXECUTE ON PROCEDURE PrUpdateEstadoVeiculo FROM FuncionarioCargo   
+GRANT EXECUTE ON PROCEDURE PrUpdateEstadoVeiculo TO FuncionarioCargo;
+    
+-- REVOKE SELECT, UPDATE ON ViVeiculosLojaFuncionario FROM FuncionarioCargo  
+GRANT SELECT, UPDATE ON ViVeiculosLojaFuncionario TO FuncionarioCargo;
+-- REVOKE SELECT, INSERT, DELETE, UPDATE ON Cliente FROM FuncionarioCargo
+GRANT SELECT, INSERT, DELETE, UPDATE ON Cliente TO FuncionarioCargo;
+-- REVOKE SELECT, INSERT ON ViVeiculosLojaFuncionario FROM FuncionarioCargo
+GRANT SELECT, INSERT ON Aluguer TO FuncionarioCargo;
+
+-- REVOKE FuncionarioCargo FROM 'marcelo_meireles'@'localhost'
+GRANT FuncionarioCargo TO 'marcelo_meireles'@'localhost';
+SET DEFAULT ROLE FuncionarioCargo TO 'marcelo_meireles'@'localhost';
+-- REVOKE FuncionarioCargo FROM 'marcio_meireles'@'localhost'
+GRANT FuncionarioCargo TO 'marcio_meireles'@'localhost';
+SET DEFAULT ROLE FuncionarioCargo TO 'marcio_meireles'@'localhost';
+-- REVOKE FuncionarioCargo FROM 'jaime_figueiredo'@'localhost'
+GRANT FuncionarioCargo TO 'jaime_figueiredo'@'localhost';
+SET DEFAULT ROLE FuncionarioCargo TO 'jaime_figueiredo'@'localhost';
+-- REVOKE FuncionarioCargo FROM 'julia_jardim'@'localhost'
+GRANT FuncionarioCargo TO 'julia_jardim'@'localhost';
+SET DEFAULT ROLE FuncionarioCargo TO 'julia_jardim'@'localhost';
+-- REVOKE FuncionarioCargo FROM 'simao_ferreira'@'localhost'
+GRANT FuncionarioCargo TO 'simao_ferreira'@'localhost';
+SET DEFAULT ROLE FuncionarioCargo TO 'simao_ferreira'@'localhost';
+-- REVOKE FuncionarioCargo FROM 'sidonio_antunes'@'localhost'
+GRANT FuncionarioCargo TO 'sidonio_antunes'@'localhost';
+SET DEFAULT ROLE FuncionarioCargo TO 'sidonio_antunes'@'localhost';
+
+-- DELETE FROM AuxTFuncionarioLoja WHERE nome_completo = 'marcelo_meireles'@'localhost'
+-- DELETE FROM AuxTFuncionarioLoja WHERE nome_completo = 'marcio_meireles'@'localhost'
+-- DELETE FROM AuxTFuncionarioLoja WHERE nome_completo = 'jaime_figueiredo'@'localhost'
+-- DELETE FROM AuxTFuncionarioLoja WHERE nome_completo = 'julia_jardim'@'localhost'
+-- DELETE FROM AuxTFuncionarioLoja WHERE nome_completo = 'simao_ferreira'@'localhost'
+-- DELETE FROM AuxTFuncionarioLoja WHERE nome_completo = 'sidonio_antunes'@'localhost'
+INSERT INTO AuxTFuncionarioLoja VALUES
+('marcelo_meireles@localhost', 1),
+('marcio_meireles@localhost', 1),
+('jaime_figueiredo@localhost', 2),
+('julia_jardim@localhost', 2),
+('simao_ferreira@localhost', 3),
+('sidonio_antunes@localhost', 3);
