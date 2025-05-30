@@ -28,10 +28,24 @@ CREATE ROLE GestorFilial;
 -- DROP ROLE FuncionarioCargo
 CREATE ROLE FuncionarioCargo;
 
+-- DROP TABLE AuxFuncionarioUtilizador
+CREATE TABLE AuxUtilizador 
+(
+	id_funcionario INT PRIMARY KEY NOT NULL,
+	username       VARCHAR(150) NOT NULL,
+	cargo          ENUM('ADMINISTRADOR', 'GESTORFILIAL', 'FUNCIONARIO'),
+    
+	FOREIGN KEY (id_funcionario) REFERENCES Funcionario(id_funcionario)
+		ON DELETE RESTRICT
+        ON UPDATE NO ACTION
+);
+
 
 
 -- ==Administrador==
 
+-- REVOKE SELECT, INSERT, DELETE, UPDATE ON AuxUtilizador FROM Administrador
+GRANT SELECT, INSERT, DELETE, UPDATE ON AuxUtilizador TO Administrador;
 -- REVOKE SELECT, INSERT, DELETE, UPDATE ON Cliente FROM Administrador
 GRANT SELECT, INSERT, DELETE, UPDATE ON Cliente TO Administrador;
 -- REVOKE SELECT, INSERT, DELETE, UPDATE ON Veiculo FROM Administrador
@@ -52,44 +66,38 @@ GRANT FuncionarioCargo TO Administrador WITH ADMIN OPTION;
 GRANT Administrador TO 'firmino_coelho'@'localhost';
 SET DEFAULT ROLE Administrador TO 'firmino_coelho'@'localhost';
 
+INSERT INTO AuxUtilizador VALUES
+(1, 'firmino_coelho', 'ADMINISTRADOR');
+
 
 -- == Gestor Filial==
 
-
--- DROP TABLE AuxTGestorFilialLoja
-CREATE TABLE AuxTGestorFilialLoja
-(
-  nome_completo VARCHAR(100) PRIMARY KEY NOT NULL,
-  id_loja       INT NOT NULL
-);
-
--- REVOKE SELECT, INSERT, DELETE, UPDATE ON AuxTGestorFilialLoja FROM Administrador;
-GRANT SELECT, INSERT, DELETE, UPDATE ON AuxTGestorFilialLoja TO Administrador;
-
-
--- DROP VIEW VeiculosLojaGestorFilial
-CREATE OR REPLACE VIEW ViVeiculosLojaGestorFilial AS
-SELECT *
-FROM Veiculo AS V
-NATURAL JOIN AuxTGestorFilialLoja AS G
-	WHERE CURRENT_USER() = G.nome_completo;  -- CURRENT_USER é o nome do utilizador atual
+-- DROP VIEW ViVeiculosUtilizador
+CREATE OR REPLACE VIEW ViVeiculosUtilizador AS
+SELECT V.id_veiculo, V.matricula, V.preco, V.estado, V.marca, V.tipo_veiculo, V.ano, V.id_loja
+FROM AuxUtilizador AS U
+NATURAL JOIN Funcionario AS F -- id_loja
+NATURAL JOIN Veiculo AS V -- id_funcionario
+	WHERE U.username = SUBSTRING_INDEX(USER(), '@', 1);
           
           
--- DROP VIEW FuncionariosLojaGestorFilial
-CREATE OR REPLACE VIEW ViFuncionariosLojaGestorFilial AS
-SELECT *
-FROM Funcionario AS F
-NATURAL JOIN AuxTGestorFilialLoja AS G
-	WHERE CURRENT_USER() = G.nome_completo  -- CURRENT_USER é o nome do utilizador atual
-		  AND F.id_loja = G.id_loja;         
+-- DROP VIEW ViFuncionariosLoja
+CREATE OR REPLACE VIEW ViFuncionariosLoja AS
+SELECT F2.id_funcionario, F2.nome_completo, F2.funcao, F2.id_loja
+FROM AuxUtilizador AS U
+NATURAL JOIN Funcionario AS F1 -- id_funcionario
+INNER JOIN Funcionario AS F2  -- id_loja
+	ON F1.id_loja = F2.id_loja
+WHERE U.username = SUBSTRING_INDEX(USER(), '@', 1)
+  AND U.cargo IN ('GESTORFILIAL', 'ADMINISTRADOR');
           
-          
--- DROP VIEW LojaGestorFilial
-CREATE OR REPLACE VIEW ViLojaGestorFilial AS
-SELECT *
-FROM Loja AS L
-NATURAL JOIN AuxTGestorFilialLoja AS G
-	WHERE CURRENT_USER() = G.nome_completo;  -- CURRENT_USER é o nome do utilizador atual
+-- DROP VIEW ViLojaUtilizador
+CREATE OR REPLACE VIEW ViLojaUtilizador AS
+SELECT L.id_loja, L.email, L.cidade, L.rua, L.numero_porta, L.codigo_postal
+FROM AuxUtilizador AS U
+NATURAL JOIN Funcionario AS F -- id_funcionario
+NATURAL JOIN Loja AS L -- id_loja
+	WHERE U.username = SUBSTRING_INDEX(USER(), '@', 1);  -- CURRENT_USER é o nome do utilizador atual
           
 
 -- DROP PROCEDURE PrUpdateVeiculos
@@ -149,19 +157,18 @@ DELIMITER ;
 -- REVOKE EXECUTE ON PROCEDURE PrUpdateVeiculos FROM GestorFilial
 GRANT EXECUTE ON PROCEDURE PrUpdateVeiculos TO GestorFilial;
 
--- REVOKE SELECT, INSERT, DELETE, UPDATE ON VeiculosLojaGestorFilial FROM GestorFilial
-GRANT SELECT, INSERT, DELETE ON ViVeiculosLojaGestorFilial TO GestorFilial;
--- REVOKE SELECT, INSERT, DELETE, UPDATE ON FuncionariosLojaGestorFilial FROM GestorFilial
-GRANT SELECT, INSERT, DELETE, UPDATE ON ViFuncionariosLojaGestorFilial TO GestorFilial;
--- REVOKE SELECT, INSERT, DELETE, UPDATE ON LojaGestorFilial FROM GestorFilial
-GRANT SELECT, INSERT, DELETE, UPDATE ON ViLojaGestorFilial TO GestorFilial;
+-- REVOKE SELECT ON AuxUtilizador FROM GestorFilial
+GRANT SELECT ON AuxUtilizador TO GestorFilial;
+-- REVOKE SELECT, INSERT, DELETE, UPDATE ON ViVeiculosUtilizador FROM GestorFilial
+GRANT SELECT, INSERT, DELETE ON ViVeiculosUtilizador TO GestorFilial;
+-- REVOKE SELECT, INSERT, DELETE, UPDATE ON ViFuncionariosLoja FROM GestorFilial
+GRANT SELECT, INSERT, DELETE, UPDATE ON ViFuncionariosLoja TO GestorFilial;
+-- REVOKE SELECT, INSERT, DELETE, UPDATE ON ViLojaUtilizador FROM GestorFilial
+GRANT SELECT, INSERT, DELETE, UPDATE ON ViLojaUtilizador TO GestorFilial;
 -- REVOKE SELECT, INSERT, DELETE, UPDATE ON Cliente FROM GestorFilial
 GRANT SELECT, INSERT, DELETE, UPDATE ON Cliente TO GestorFilial;
 -- REVOKE SELECT, INSERT, UPDATE ON Aluguer FROM GestorFilial
 GRANT SELECT, INSERT, UPDATE ON Aluguer TO GestorFilial;
-
--- REVOKE FuncionarioCargo FROM GestorFilial WITH ADMIN OPTION;
-GRANT FuncionarioCargo TO GestorFilial WITH ADMIN OPTION;
 
 -- REVOKE GestorFilial FROM 'filipa_coelho'@'localhost'
 GRANT GestorFilial TO 'filipa_coelho'@'localhost';
@@ -172,9 +179,9 @@ SET DEFAULT ROLE GestorFilial TO 'jorge_coelho'@'localhost';
 
 -- DELETE FROM AuxTGestorFilialLoja WHERE nome_completo = 'filipa_coelho@localhost'
 -- DELETE FROM AuxTGestorFilialLoja WHERE nome_completo = 'jorge_coelho@localhost'
-INSERT INTO AuxTGestorFilialLoja VALUES
-('filipa_coelho@localhost', 2),
-('jorge_coelho@localhost', 3);
+INSERT INTO AuxUtilizador VALUES
+(2, 'filipa_coelho', 'GESTORFILIAL'),
+(3, 'jorge_coelho', 'GESTORFILIAL');
 
 
 
@@ -272,3 +279,6 @@ INSERT INTO AuxTFuncionarioLoja VALUES
 ('julia_jardim@localhost', 2),
 ('simao_ferreira@localhost', 3),
 ('sidonio_antunes@localhost', 3);
+
+SELECT *
+FROM AuxUtilizador;
