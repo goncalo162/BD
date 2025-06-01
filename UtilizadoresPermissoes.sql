@@ -88,8 +88,7 @@ FROM AuxUtilizador AS U
 NATURAL JOIN Funcionario AS F1 -- id_funcionario
 INNER JOIN Funcionario AS F2  -- id_loja
 	ON F1.id_loja = F2.id_loja
-WHERE U.username = SUBSTRING_INDEX(USER(), '@', 1)
-  AND U.cargo IN ('GESTORFILIAL', 'ADMINISTRADOR');
+WHERE U.username = SUBSTRING_INDEX(USER(), '@', 1);
           
 -- DROP VIEW ViLojaUtilizador
 CREATE OR REPLACE VIEW ViLojaUtilizador AS
@@ -125,27 +124,27 @@ BEGIN
 			LEAVE procedimento;
 		END IF;
 		IF matricula_nova IS NOT NULL THEN
-			UPDATE ViVeiculosLoja
+			UPDATE ViVeiculosUtilizador
             SET matricula = matricula_nova
             WHERE id_veiculo = id_veiculo_a_atualizar;
         END IF;        
 		IF estado_novo_veiculo IS NOT NULL THEN
-			UPDATE ViVeiculosLoja
+			UPDATE ViVeiculosUtilizador
             SET estado = estado_novo_veiculo
             WHERE id_veiculo = id_veiculo_a_atualizar;
         END IF;
 		IF marca_nova IS NOT NULL THEN
-			UPDATE ViVeiculosLoja
+			UPDATE ViVeiculosUtilizador
             SET marca = marca_nova
             WHERE id_veiculo = id_veiculo_a_atualizar;
         END IF;
 		IF tipo_veiculo_novo IS NOT NULL THEN
-			UPDATE ViVeiculosLoja
+			UPDATE ViVeiculosUtilizador
             SET tipo_veiculo = tipo_veiculo_novo
             WHERE id_veiculo = id_veiculo_a_atualizar;
         END IF;
 		IF ano_novo IS NOT NULL THEN
-			UPDATE ViVeiculosLoja
+			UPDATE ViVeiculosUtilizador
             SET ano = ano_novo
             WHERE id_veiculo = id_veiculo_a_atualizar;
         END IF;
@@ -187,26 +186,6 @@ INSERT INTO AuxUtilizador VALUES
 
 -- == Funcionario ==
 
--- DROP TABLE AuxTFuncionarioLoja
-CREATE TABLE AuxTFuncionarioLoja
-(
-  nome_completo VARCHAR(100) PRIMARY KEY NOT NULL,
-  id_loja       INT NOT NULL
-);
-
--- REVOKE SELECT, INSERT, DELETE, UPDATE ON AuxTFuncionarioLoja FROM Administrador
-GRANT SELECT, INSERT, DELETE, UPDATE ON AuxTFuncionarioLoja TO Administrador;
--- REVOKE SELECT, INSERT, DELETE, UPDATE ON AuxTFuncionarioLoja FROM GestorFilial
-GRANT SELECT, INSERT, DELETE, UPDATE ON AuxTFuncionarioLoja TO GestorFilial;
-
--- DROP VIEW ViVeiculosLojaFuncionario
-CREATE OR REPLACE VIEW ViVeiculosLojaFuncionario AS
-SELECT estado
-FROM Veiculo AS V
-NATURAL JOIN AuxTFuncionarioLoja AS F
-	WHERE F.nome_completo = CURRENT_USER();
-    
-
 -- DROP PROCEDURE PrUpdateEstadoVeiculo
 DELIMITER $$
 CREATE PROCEDURE PrUpdateEstadoVeiculo
@@ -228,7 +207,7 @@ BEGIN
 			LEAVE procedimento;
 		END IF;      
 		IF estado_novo_veiculo IS NOT NULL THEN
-			UPDATE ViVeiculosLoja
+			UPDATE ViVeiculosUtilizador
             SET estado = estado_novo_veiculo
             WHERE id_veiculo = id_veiculo_a_atualizar;
         END IF;
@@ -240,8 +219,12 @@ DELIMITER ;
 -- REVOKE EXECUTE ON PROCEDURE PrUpdateEstadoVeiculo FROM FuncionarioCargo   
 GRANT EXECUTE ON PROCEDURE PrUpdateEstadoVeiculo TO FuncionarioCargo;
     
--- REVOKE SELECT, UPDATE ON ViVeiculosLojaFuncionario FROM FuncionarioCargo  
-GRANT SELECT, UPDATE ON ViVeiculosLojaFuncionario TO FuncionarioCargo;
+-- REVOKE SELECT ON ViVeiculosLoja FROM FuncionarioCargo  
+GRANT SELECT ON ViFuncionariosLoja TO FuncionarioCargo;
+-- REVOKE SELECT ON ViVeiculosUtilizador FROM FuncionarioCargo
+GRANT SELECT ON ViVeiculosUtilizador TO FuncionarioCargo;
+-- REVOKE SELECT ON ViLojaUtilizador FROM FuncionarioCargo
+GRANT SELECT ON ViLojaUtilizador TO FuncionarioCargo;
 -- REVOKE SELECT, INSERT, DELETE, UPDATE ON Cliente FROM FuncionarioCargo
 GRANT SELECT, INSERT, DELETE, UPDATE ON Cliente TO FuncionarioCargo;
 -- REVOKE SELECT, INSERT ON ViVeiculosLojaFuncionario FROM FuncionarioCargo
@@ -266,19 +249,11 @@ SET DEFAULT ROLE FuncionarioCargo TO 'simao_ferreira'@'localhost';
 GRANT FuncionarioCargo TO 'sidonio_antunes'@'localhost';
 SET DEFAULT ROLE FuncionarioCargo TO 'sidonio_antunes'@'localhost';
 
--- DELETE FROM AuxTFuncionarioLoja WHERE nome_completo = 'marcelo_meireles'@'localhost'
--- DELETE FROM AuxTFuncionarioLoja WHERE nome_completo = 'marcio_meireles'@'localhost'
--- DELETE FROM AuxTFuncionarioLoja WHERE nome_completo = 'jaime_figueiredo'@'localhost'
--- DELETE FROM AuxTFuncionarioLoja WHERE nome_completo = 'julia_jardim'@'localhost'
--- DELETE FROM AuxTFuncionarioLoja WHERE nome_completo = 'simao_ferreira'@'localhost'
--- DELETE FROM AuxTFuncionarioLoja WHERE nome_completo = 'sidonio_antunes'@'localhost'
-INSERT INTO AuxTFuncionarioLoja VALUES
-('marcelo_meireles@localhost', 1),
-('marcio_meireles@localhost', 1),
-('jaime_figueiredo@localhost', 2),
-('julia_jardim@localhost', 2),
-('simao_ferreira@localhost', 3),
-('sidonio_antunes@localhost', 3);
 
-SELECT *
-FROM AuxUtilizador;
+INSERT INTO AuxUtilizador VALUES
+(4, 'marcelo_meireles', 'FUNCIONARIO'),
+(5, 'marcio_meireles', 'FUNCIONARIO'),
+(6, 'simao_ferreira', 'FUNCIONARIO'),
+(7, 'sidonio_antunes', 'FUNCIONARIO'),
+(8, 'julia_jardim', 'FUNCIONARIO'),
+(9, 'jaime_figueiredo', 'FUNCIONARIO');

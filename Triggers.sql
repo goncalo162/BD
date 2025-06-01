@@ -1,6 +1,9 @@
+USE AutoArmando
+
+-- DROP TRIGGER calcula_montante
 DELIMITER $$
 
-CREATE TRIGGER calcula_montante
+CREATE TRIGGER TrCalculaMontante
 BEFORE INSERT ON Aluguer
 FOR EACH ROW
 BEGIN
