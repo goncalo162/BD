@@ -1,24 +1,28 @@
 USE AutoArmando;
 
--- DROP VIEW AluguerVeiculo
-CREATE VIEW AluguerVeiculo AS
+-- DROP VIEW ViAluguerVeiculo
+CREATE VIEW ViAluguerVeiculo AS
 SELECT *
 FROM Aluguer
 NATURAL JOIN Veiculo;
 
 
--- DROP VIEW AluguerCliente
-CREATE VIEW AluguerCliente AS
+-- DROP VIEW ViAluguerCliente
+CREATE VIEW ViAluguerCliente AS
 SELECT *
 FROM Aluguer
 NATURAL JOIN Cliente;
 
 
--- DROP VIEW FuncionariosLoja
-CREATE VIEW FuncionariosLoja AS
+-- DROP VIEW ViFuncionariosLoja
+CREATE VIEW ViFuncionariosLoja AS
 SELECT *
 FROM Funcionario
 NATURAL JOIN Loja;
 
 
--- DROP VIEW 
+-- DROP VIEW ViFuncionariosAluguer
+CREATE VIEW ViFuncionariosAluguer AS
+SELECT *
+FROM Funcionario
+NATURAL JOIN Aluguer;

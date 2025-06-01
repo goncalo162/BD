@@ -38,16 +38,19 @@ INSERT INTO Aluguer(pagamento_fisico, data_inicio, data_fim, id_cliente, id_veic
 (1, '2025-04-01', '2025-04-03', 1, 1, 1),
 (0, '2025-04-10', '2025-04-12', 2, 2, 2),
 (1, '2025-05-01', '2025-05-02', 3, 3, 3),
-(0, '2025-05-03', '2025-05-05', 4, 4, 2),
-(1, '2025-05-06', '2025-05-08', 5, 5, 1),
-(0, '2025-05-10', '2025-05-12', 1, 4, 2);
+(0, '2025-05-28', '2025-05-05', 4, 4, 2),
+(1, '2025-05-29', '2025-05-08', 5, 5, 1),
+(0, '2025-05-29', '2025-05-30', 1, 4, 2);
 
 
 -- DELETE FROM Aluguer WHERE id_aluguer = x
 INSERT INTO Funcionario(nome_completo, funcao, id_loja) VALUES
 ('Firmino Coelho', 'Chefe da AutoArmando', 1),
 ('Filipa Coelho', 'Gestora de Braga', 2),
-('Jorge Coelho', 'Gestor de Viana do Castelo', 3);
-
-SELECT *
-FROM Funcionario;
+('Jorge Coelho', 'Gestor de Viana do Castelo', 3),
+('Marcelo Meireles', 'Rececionista', 1),
+('Márcio Meireles', 'Comercial', 1),
+('Simão Ferreira', 'Rececionista', 2),
+('Sidónio Antunes', 'Comercial', 2),
+('Júlia Jardim', 'Rececionista', 3),
+('Jaime Figueiredo', 'Comercial', 3);
