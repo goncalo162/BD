@@ -1,0 +1,8 @@
+numero_telemovel,empresa,nome_completo,cidade,rua,numero_porta,codigo_postal,numero_carta,data_validade_carta,nif,numero_documento,data_validade_documento
+912345678,0,João Silva,Braga,Rua das Flores,10,4700-000,12345678.0,2028-05-01,123456789,987654321,2029-12-31
+913456789,1,Empresa XPTO Lda,Porto,Avenida Central,101,4000-123,,,987654321,123123123,2030-01-01
+916789012,0,Carlos Sousa,Faro,Travessa do Mar,2,8000-123,56781234.0,2026-10-20,334455667,778899001,2027-12-12
+914567890,0,Ana Martins,Guimarães,Rua da Liberdade,45,4810-001,87654321.0,2029-06-15,192837465,112233445,2031-02-01
+915678901,1,Transportes LIMA SA,Lisboa,Rua das Indústrias,88,1000-200,,,564738291,998877665,2032-03-15
+917654321,0,Teresa Carvalho,Coimbra,Rua da Universidade,99,3000-370,44556677.0,2027-08-01,556677889,223344556,2029-04-15
+918765432,1,Construtora ABC SA,Aveiro,Zona Industrial,10,3800-305,,,667788990,334455667,2031-11-20
