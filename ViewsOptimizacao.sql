@@ -12,17 +12,3 @@ CREATE VIEW ViAluguerCliente AS
 SELECT *
 FROM Aluguer
 NATURAL JOIN Cliente;
-
-
--- DROP VIEW ViFuncionariosLoja
-CREATE VIEW ViFuncionariosLoja AS
-SELECT *
-FROM Funcionario
-NATURAL JOIN Loja;
-
-
--- DROP VIEW ViFuncionariosAluguer
-CREATE VIEW ViFuncionariosAluguer AS
-SELECT *
-FROM Funcionario
-NATURAL JOIN Aluguer;

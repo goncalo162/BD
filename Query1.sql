@@ -1,11 +1,13 @@
-USE AutoArmando
+USE AutoArmando;
 
 -- Query 1 - Resumo Semanal
 
--- DROP PROCEDURE PrFazResumoSemanal
-DELIMITER $$
-CREATE PROCEDURE PrFazResumoSemanal()
-BEGIN
+-- DROP EVENT EvFazResumoSemanal
+CREATE EVENT EvFazResumoSemanal
+ON SCHEDULE
+	EVERY 1 WEEK
+    STARTS TIMESTAMP('2025-05-31 23:55:00')
+DO
 	SET @data_inicio_semana = DATE_SUB(CURDATE(), INTERVAL 6 DAY); -- retira 6 dias ao valor da data atual
     SELECT V.tipo_veiculo AS 'Tipo de Veículo', 
              
@@ -34,13 +36,3 @@ BEGIN
 		ON V.id_veiculo = A.id_veiculo
 	GROUP BY V.tipo_veiculo
     ORDER BY `Lucro da Semana` DESC;
-END$$
-DELIMITER ;
-
--- DROP EVENT EvFazResumoSemanal;
-CREATE EVENT EvFazResumoSemanal
-ON SCHEDULE
-	EVERY 1 WEEK
-    STARTS TIMESTAMP('2025-05-31 23:55:00')
-DO
-	CALL PrFazResumoSemanal();
