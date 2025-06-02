@@ -74,7 +74,7 @@ CREATE TABLE Aluguer
 (
   id_aluguer       INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
   pagamento_fisico TINYINT NOT NULL,
-  montante         DECIMAL(10,2) NOT NULL,
+  montante         DECIMAL(10,2) NOT NULL DEFAULT 0.0,
   data_inicio      DATE NOT NULL,
   data_fim         DATE NOT NULL,
   

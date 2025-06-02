@@ -1,0 +1,5 @@
+id_veiculo,matricula,preco,estado,marca,tipo_veiculo,ano,id_loja
+1,FF78GH,17500.00,LIVRE,Komatsu,Helicóptero de Combate,2021,1
+2,GG89HI,130.00,ALUGADO,Audi,Escavadora,2001,3
+3,HH90IJ,290.95,MANUTENCAO,Hitachi,Empilhadora,2003,2
+4,II01JK,520.00,LIVRE,Toyota,Betoneira,2024,1

@@ -1,5 +1,6 @@
 [
     {
+        "id_aluguer": 1,
         "pagamento_fisico": 1,
         "montante": 1600.0,
         "data_inicio": "2025-04-01",
@@ -9,6 +10,7 @@
         "id_funcionario": 1
     },
     {
+        "id_aluguer": 2,
         "pagamento_fisico": 0,
         "montante": 1100.0,
         "data_inicio": "2025-04-10",
@@ -18,6 +20,7 @@
         "id_funcionario": 2
     },
     {
+        "id_aluguer": 3,
         "pagamento_fisico": 1,
         "montante": 800.0,
         "data_inicio": "2025-05-01",
@@ -27,6 +30,7 @@
         "id_funcionario": 3
     },
     {
+        "id_aluguer": 4,
         "pagamento_fisico": 0,
         "montante": 1800.0,
         "data_inicio": "2025-05-03",
@@ -36,6 +40,7 @@
         "id_funcionario": 2
     },
     {
+        "id_aluguer": 5,
         "pagamento_fisico": 1,
         "montante": 1350.0,
         "data_inicio": "2025-05-06",
@@ -45,6 +50,7 @@
         "id_funcionario": 1
     },
     {
+        "id_aluguer": 6,
         "pagamento_fisico": 0,
         "montante": 1450.0,
         "data_inicio": "2025-05-10",

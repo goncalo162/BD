@@ -2,7 +2,7 @@ USE AutoArmando;
 
 -- Query 2 - Funcionário que realizou mais alugueres por loja
 
-	WITH 
+WITH 
 	NumAlugueres AS -- Calcula o número de alugueres para cada funcionário
 	(
 		SELECT FA.id_funcionario, FA.id_loja,
