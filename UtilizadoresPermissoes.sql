@@ -81,8 +81,8 @@ NATURAL JOIN Veiculo AS V -- id_funcionario
 	WHERE U.username = SUBSTRING_INDEX(USER(), '@', 1);
           
           
--- DROP VIEW ViFuncionariosLoja
-CREATE OR REPLACE VIEW ViFuncionariosLoja AS
+-- DROP VIEW ViFuncionariosLojaUtilizador
+CREATE OR REPLACE VIEW ViFuncionariosLojaUtilizador AS
 SELECT F2.id_funcionario, F2.nome_completo, F2.funcao, F2.id_loja
 FROM AuxUtilizador AS U
 NATURAL JOIN Funcionario AS F1 -- id_funcionario
@@ -160,8 +160,8 @@ GRANT EXECUTE ON PROCEDURE PrUpdateVeiculos TO GestorFilial;
 GRANT SELECT ON AuxUtilizador TO GestorFilial;
 -- REVOKE SELECT, INSERT, DELETE, UPDATE ON ViVeiculosUtilizador FROM GestorFilial
 GRANT SELECT, INSERT, DELETE ON ViVeiculosUtilizador TO GestorFilial;
--- REVOKE SELECT, INSERT, DELETE, UPDATE ON ViFuncionariosLoja FROM GestorFilial
-GRANT SELECT, INSERT, DELETE, UPDATE ON ViFuncionariosLoja TO GestorFilial;
+-- REVOKE SELECT, INSERT, DELETE, UPDATE ON ViFuncionariosLojaUtilizador FROM GestorFilial
+GRANT SELECT, INSERT, DELETE, UPDATE ON ViFuncionariosLojaUtilizador TO GestorFilial;
 -- REVOKE SELECT, INSERT, DELETE, UPDATE ON ViLojaUtilizador FROM GestorFilial
 GRANT SELECT, INSERT, DELETE, UPDATE ON ViLojaUtilizador TO GestorFilial;
 -- REVOKE SELECT, INSERT, DELETE, UPDATE ON Cliente FROM GestorFilial
@@ -215,12 +215,12 @@ BEGIN
     END procedimento;
 END$$
 DELIMITER ;
-	
+
 -- REVOKE EXECUTE ON PROCEDURE PrUpdateEstadoVeiculo FROM FuncionarioCargo   
 GRANT EXECUTE ON PROCEDURE PrUpdateEstadoVeiculo TO FuncionarioCargo;
-    
+
 -- REVOKE SELECT ON ViVeiculosLoja FROM FuncionarioCargo  
-GRANT SELECT ON ViFuncionariosLoja TO FuncionarioCargo;
+GRANT SELECT ON ViFuncionariosLojaUtilizador TO FuncionarioCargo;
 -- REVOKE SELECT ON ViVeiculosUtilizador FROM FuncionarioCargo
 GRANT SELECT ON ViVeiculosUtilizador TO FuncionarioCargo;
 -- REVOKE SELECT ON ViLojaUtilizador FROM FuncionarioCargo

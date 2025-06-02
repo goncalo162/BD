@@ -1,0 +1,26 @@
+[
+  {
+    "id_loja": 1,
+    "email": "loja1@exemplo.com",
+    "cidade": "Lisboa",
+    "rua": "Rua A",
+    "numero_porta": 10,
+    "codigo_postal": "1000-000"
+  },
+  {
+    "id_loja": 2,
+    "email": "loja2@exemplo.com",
+    "cidade": "Porto",
+    "rua": "Rua B",
+    "numero_porta": 20,
+    "codigo_postal": "2000-000"
+  },
+  {
+    "id_loja": 3,
+    "email": "loja3@exemplo.com",
+    "cidade": "Viseu",
+    "rua": "Rua C",
+    "numero_porta": 30,
+    "codigo_postal": "3000-000"
+  }
+]
