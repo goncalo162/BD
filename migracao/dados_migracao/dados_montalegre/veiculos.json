@@ -1,47 +1,47 @@
 [
   {
+    "id_veiculo": 1,
     "matricula": "AA12BB",
     "preco": 15000.00,
     "estado": "LIVRE",
     "marca": "Toyota",
     "tipo_veiculo": "Sedan",
-    "ano": 2020,
-    "id_loja": 1
+    "ano": 2020
   },
   {
+    "id_veiculo": 2,
     "matricula": "BB23CD",
     "preco": 20000.00,
     "estado": "ALUGADO",
     "marca": "Ford",
     "tipo_veiculo": "SUV",
-    "ano": 2021,
-    "id_loja": 2
+    "ano": 2021
   },
   {
+    "id_veiculo": 3,
     "matricula": "CC34DE",
     "preco": 18000.00,
     "estado": "MANUTENCAO",
     "marca": "Renault",
     "tipo_veiculo": "Hatchback",
-    "ano": 2019,
-    "id_loja": 3
+    "ano": 2019
   },
   {
+    "id_veiculo": 4,
     "matricula": "DD46EF",
     "preco": 22000.00,
     "estado": "LIVRE",
     "marca": "Volkswagen",
     "tipo_veiculo": "Sedan",
-    "ano": 2022,
-    "id_loja": 1
+    "ano": 2022
   },
   {
+    "id_veiculo": 5,
     "matricula": "EE67FG",
     "preco": 25000.00,
     "estado": "LIVRE",
     "marca": "BMW",
     "tipo_veiculo": "SUV",
-    "ano": 2023,
-    "id_loja": 2
+    "ano": 2023
   }
 ]

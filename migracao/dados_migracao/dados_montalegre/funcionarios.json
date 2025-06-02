@@ -1,20 +1,12 @@
 [
   {
     "id_funcionario": 1,
-    "nome_completo": "João Silva",
-    "funcao": "Vendedor",
-    "id_loja": 1
+    "nome_completo": "Marcelo Meireles",
+    "funcao": "Rececionista"
   },
   {
     "id_funcionario": 2,
-    "nome_completo": "Maria Costa",
-    "funcao": "Mecânico",
-    "id_loja": 2
-  },
-  {
-    "id_funcionario": 3,
-    "nome_completo": "Pedro Joao",
-    "funcao": "Limpador",
-    "id_loja": 3
+    "nome_completo": "Márcio Meireles",
+    "funcao": "Comercial"
   }
 ]
